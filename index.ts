@@ -61,7 +61,7 @@ async function user(request: Request): Promise<Response> {
           : {},
       });
 
-      return json(await res.text());
+      return json(await res.json());
     }
 
     default:
