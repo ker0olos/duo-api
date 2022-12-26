@@ -44,18 +44,21 @@ async function user(request: Request): Promise<Response> {
       const data = new URL(request.url).searchParams;
 
       const id = data.get('id');
-      const token = data.get('token');
 
-      if (!id || !token) {
+      if (!id) {
         return new Response('Bad request', { status: 400 });
       }
+
+      const token = data.get('token');
 
       const url = `https://www.duolingo.com/2017-06-30/users?username=${id}`;
 
       const res = await fetch(url, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
+        headers: token
+          ? {
+            'Authorization': `Bearer ${token}`,
+          }
+          : {},
       });
 
       return json(await res.text());
