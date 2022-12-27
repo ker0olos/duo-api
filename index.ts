@@ -1,44 +1,47 @@
-import { json, serve } from 'https://deno.land/x/sift@0.6.0/mod.ts';
+import { ConnInfo, json, serve } from 'https://deno.land/x/sift@0.6.0/mod.ts';
 
-// c
-async function login(request: Request): Promise<Response> {
+import type { User } from './types.ts';
+
+async function token(request: Request): Promise<Response> {
   switch (request.method) {
-    case 'POST': {
+    case 'GET': {
+      const data = new URL(request.url).searchParams;
+
       const url = 'https://www.duolingo.com/login';
 
-      let data = await request.json();
+      const login = data.get('username');
+      const password = data.get('password');
 
-      const res = await fetch(url, {
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ login: data.username, password: data.password }),
+        body: JSON.stringify({ login, password }),
       });
 
-      data = await res.json();
+      const body = await response.json();
 
-      if (data['failure']) {
+      if (body['failure']) {
         return json(data, {
           status: 403,
           statusText: 'Forbidden',
         });
       }
 
-      return json({
-        id: data.user_id,
-        username: data.username,
-        token: res.headers.get('jwt'),
-      });
+      return json(response.headers.get('jwt'));
     }
 
     default:
-      return new Response('Invalid method', { status: 405 });
+      return new Response('Invalid Method', { status: 405 });
   }
 }
 
-async function user(request: Request): Promise<Response> {
+async function user(
+  request: Request,
+  map?: ((b: { users: User[] }) => unknown) | ConnInfo,
+): Promise<Response> {
   switch (request.method) {
     case 'GET': {
       const data = new URL(request.url).searchParams;
@@ -61,15 +64,23 @@ async function user(request: Request): Promise<Response> {
           : {},
       });
 
-      return json(await res.json());
+      let body = await res.json();
+
+      if (typeof map === 'function') {
+        body = map(body);
+      }
+
+      return json(body);
     }
 
     default:
-      return new Response('Invalid method', { status: 405 });
+      return new Response('Invalid Method', { status: 405 });
   }
 }
 
 serve({
   '/': user,
-  '/login': login,
+  '/token': (r) => token(r),
+  '/streak': (r) => user(r, (b) => b.users?.[0]?.streak),
+  '/xpGoalMetToday': (r) => user(r, (b) => b.users?.[0]?.xpGoalMetToday),
 });
