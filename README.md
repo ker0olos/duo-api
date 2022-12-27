@@ -6,9 +6,11 @@
 | `/token`          | This token is required for retrieving most of the user properties | string  | no             |
 | `/streak`         | Returns the ongoing streak                                        | number  | no             |
 | `/xpGoalMetToday` | Returns true if the user met their xp goal for the day            | boolean | yes            |
+| `/freeze`         | Returns the number of streak freeze the user has                  | number  | yes            |
 
-> Be VERY careful when using this proxy. DO NOT share your password or token
-> with others.
+> **Warning** Be VERY careful when using this proxy. DO NOT share your password
+> or token with others. This is for your personal use only. Using this in your
+> apps or public projects is a very bad idea.
 
 ### Examples
 

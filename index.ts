@@ -83,4 +83,6 @@ serve({
   '/token': (r) => token(r),
   '/streak': (r) => user(r, (b) => b.users?.[0]?.streak),
   '/xpGoalMetToday': (r) => user(r, (b) => b.users?.[0]?.xpGoalMetToday),
+  '/freeze': (r) =>
+    user(r, (b) => b.users?.[0]?.trackingProperties?.num_item_streak_freeze),
 });
