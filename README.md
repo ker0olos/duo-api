@@ -28,3 +28,11 @@ false
 curl "https://duoapi.deno.dev/streak?id=ker0olos&token=eyJ0eXAiOiJ"
 3
 ```
+
+<p align="center">
+  <img width="230" src="https://user-images.githubusercontent.com/52022280/211170577-d049456b-d016-4208-add3-5b160090057a.jpg" alt="A screenshot of a Duolingo KWGT"></img>
+  <img width="230" src="https://user-images.githubusercontent.com/52022280/211170580-f89bc977-d16a-427d-8ccf-7fa2f52a8a3c.jpg" alt="A second screenshot of a Duolingo KWGT"></img>
+  <img width="230" src="https://user-images.githubusercontent.com/52022280/211170584-f76d88b7-59cb-414f-9595-92543d718122.jpg" alt="A third screenshot of a Duolingo KWGT"></img>
+</p>
+
+<h6 align="center"><i>(Sexy looking KWGTs)</i></h6>
